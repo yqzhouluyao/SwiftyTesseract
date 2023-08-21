@@ -16,14 +16,10 @@ public protocol LanguageModelDataSource {
 }
 
 extension Bundle: LanguageModelDataSource {
-
-  /// Path to `tessdata` folder in `Bundle`. Assumes `tessdata` folder is located at the `Bundle` root.
   public var pathToTrainedData: String {
-    if let resourceUrl = resourceURL {
-      // This means we're in a Mac app or Mac Catalyst app
-      return resourceUrl.appendingPathComponent("tessdata").path
-    } else {
-      return bundleURL.appendingPathComponent("tessdata").path
-    }
+    // 获取应用的文档目录
+    let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+    let documentsDirectory = paths[0]
+    return (documentsDirectory as NSString).appendingPathComponent("tessdata")
   }
 }
